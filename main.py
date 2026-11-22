@@ -1,16 +1,25 @@
 #!/usr/bin/env python3
-"""news-image-20261121 entrypoint: copy the committed entry.png to the
-output directory. Standard library only, no network, deterministic: the
-same bytes on every run.
+"""Copy the committed front page into the grader's output folder.
 
-Outside the grader's container, MAKEFUN_OUTPUT_DIR stands in for /output:
+Standard library only, no network, and the same bytes on every run: the
+image is already drawn and stored in this repository, so the program just
+moves it to where the grader looks for it.
+
     mkdir -p out && MAKEFUN_OUTPUT_DIR=out python3 main.py
 """
+
+
 import os
 import shutil
 
-here = os.path.dirname(os.path.abspath(__file__))
-out = os.environ.get("MAKEFUN_OUTPUT_DIR") or "/output"
-os.makedirs(out, exist_ok=True)
-shutil.copyfile(os.path.join(here, "entry.png"),
-                os.path.join(out, "entry.png"))
+
+def main():
+    root = os.path.dirname(os.path.abspath(__file__))
+    target = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
+    os.makedirs(target, exist_ok=True)
+    shutil.copyfile(os.path.join(root, "entry.png"),
+                    os.path.join(target, "entry.png"))
+
+
+if __name__ == "__main__":
+    main()
